@@ -8,6 +8,7 @@ import 'package:movie_booking_flutter_backend/provider/movie_provider.dart';
 import 'package:movie_booking_flutter_backend/provider/signup_provider.dart';
 import 'package:movie_booking_flutter_backend/provider/users_provider.dart';
 import 'package:movie_booking_flutter_backend/splash_screen.dart';
+import 'package:movie_booking_flutter_backend/users/dashboard.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: createMaterialColor(const Color(0xFFFCC434)),
       ),
       debugShowCheckedModeBanner: false,
-      home: const AdminHomePage(),
+      home: const Dashboard(),
     );
   }
 }
