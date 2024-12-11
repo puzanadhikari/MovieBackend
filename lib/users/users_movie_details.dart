@@ -162,7 +162,7 @@ class _UserMovieDetailState extends State<UserMovieDetail>
                   style: TextStyle(color: Colors.white)));
         }
 
-        return Padding(
+        return widget.movie['status'] == "Now Showing" ? Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -180,6 +180,41 @@ class _UserMovieDetailState extends State<UserMovieDetail>
               const SizedBox(height: 16),
               if (selectedDate != null) _buildShowTimes(),
             ],
+          ),
+        ): Center(
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Colors.white10,
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.upcoming,
+                  color: const Color(0xFFFCC434),
+                  size: 60,
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'Coming Soon',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Stay tuned for show times',
+                  style: TextStyle(
+                    color: Colors.white70,
+                    fontSize: 14,
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       },

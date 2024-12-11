@@ -161,7 +161,7 @@ class _SeatSelectionPageState extends State<SeatSelectionPage> {
                         ),
                         child: const Center(
                           child: Text(
-                            'SCREEN',
+                            'SCREEN THIS WAY',
                             style: TextStyle(
                               color: Color(0xFFFCC434),
                               fontSize: 10,
