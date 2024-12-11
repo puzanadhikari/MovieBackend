@@ -302,8 +302,6 @@ class _HallPageState extends State<HallPage> {
                           },
                           dropdownColor: Colors.black,
                           style: const TextStyle(color: Colors.white),
-                          validator: (value) =>
-                              value == null ? 'Select an Audi' : null,
                         ),
                         const SizedBox(height: 15),
                         TextFormField(
