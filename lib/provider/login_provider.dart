@@ -4,8 +4,10 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:movie_booking_flutter_backend/admin/admin_home_page.dart';
 import 'package:movie_booking_flutter_backend/constant/api_const.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:movie_booking_flutter_backend/users/home_page.dart';
 
 class LoginProvider with ChangeNotifier {
   bool isLoading = false;
@@ -15,6 +17,17 @@ class LoginProvider with ChangeNotifier {
     notifyListeners();
 
     try {
+      if (email == 'admin@gmail.com' && password == 'admin@123') {
+        _showToast("Admin Login successful", isError: false);
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const AdminHomePage(),
+          ),
+        );
+        return true;
+      }
+
       final url = '${ApiConstant.protocol}${ApiConstant.baseUrl}${ApiConstant.login}';
 
       final response = await http.post(
@@ -33,6 +46,12 @@ class LoginProvider with ChangeNotifier {
         case 200:
         case 201:
           _showToast("Login successful", isError: false);
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const HomePage(),
+            ),
+          );
           return true;
 
         case 400:

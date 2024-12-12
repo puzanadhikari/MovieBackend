@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:movie_booking_flutter_backend/admin/admin_home_page.dart';
 import 'package:movie_booking_flutter_backend/auth/signup.dart';
 import 'package:movie_booking_flutter_backend/provider/login_provider.dart';
 import 'package:provider/provider.dart';
@@ -23,7 +22,7 @@ class _LoginPageState extends State<LoginPage> {
       msg: message,
       toastLength: Toast.LENGTH_LONG,
       gravity: ToastGravity.BOTTOM,
-      backgroundColor: isError ? Colors.red : Color(0xFFFCC434),
+      backgroundColor: isError ? Colors.red : const Color(0xFFFCC434),
       textColor: Colors.white,
       fontSize: 16.0,
     );
@@ -35,13 +34,13 @@ class _LoginPageState extends State<LoginPage> {
 
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              const Color(0xFF1A1A2E),
-              const Color(0xFF16213E),
+              Color(0xFF1A1A2E),
+              Color(0xFF16213E),
             ],
           ),
         ),
@@ -242,8 +241,8 @@ class _LoginPageState extends State<LoginPage> {
   Widget _buildLoginButton(LoginProvider loginProvider, BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [const Color(0xFFFCC434), const Color(0xFFFF6B6B)],
+        gradient: const LinearGradient(
+          colors: [Color(0xFFFCC434), Color(0xFFFF6B6B)],
           begin: Alignment.centerLeft,
           end: Alignment.centerRight,
         ),
@@ -252,20 +251,12 @@ class _LoginPageState extends State<LoginPage> {
       child: ElevatedButton(
         onPressed: () async {
           if (_formKey.currentState!.validate()) {
-            final loginSuccess = await loginProvider.login(
+           loginProvider.login(
               _emailController.text.trim(),
               _passwordController.text.trim(),
               context,
             );
 
-            if (loginSuccess) {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const AdminHomePage(),
-                ),
-              );
-            }
           }
         },
         style: ElevatedButton.styleFrom(

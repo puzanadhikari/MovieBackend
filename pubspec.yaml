@@ -31,6 +31,7 @@ dependencies:
   provider:
   image_picker:
   shimmer:
+  carousel_slider:
   url_launcher:
   youtube_player_flutter:
   http:

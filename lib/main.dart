@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:movie_booking_flutter_backend/admin/admin_home_page.dart';
 import 'package:movie_booking_flutter_backend/provider/get_hall_provider.dart';
 import 'package:movie_booking_flutter_backend/provider/get_movie_provider.dart';
 import 'package:movie_booking_flutter_backend/provider/hall_provider.dart';
@@ -8,7 +7,6 @@ import 'package:movie_booking_flutter_backend/provider/movie_provider.dart';
 import 'package:movie_booking_flutter_backend/provider/signup_provider.dart';
 import 'package:movie_booking_flutter_backend/provider/users_provider.dart';
 import 'package:movie_booking_flutter_backend/splash_screen.dart';
-import 'package:movie_booking_flutter_backend/users/dashboard.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -39,7 +37,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: createMaterialColor(const Color(0xFFFCC434)),
       ),
       debugShowCheckedModeBanner: false,
-      home: const Dashboard(),
+      home: const SplashScreen(),
     );
   }
 }
