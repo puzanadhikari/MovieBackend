@@ -6,7 +6,6 @@ import 'package:movie_booking_flutter_backend/provider/get_movie_provider.dart';
 import 'package:movie_booking_flutter_backend/users/users_movie_details.dart';
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:movie_booking_flutter_backend/auth/login.dart';
 import 'package:shimmer/shimmer.dart';
 
 class MoviesPage extends StatefulWidget {
@@ -25,19 +24,16 @@ class _MoviesPageState extends State<MoviesPage>
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
 
-    // Fetch initial movies when the page loads
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _fetchMoviesForCurrentTab();
     });
 
-    // Add listener to fetch movies when tab changes
     _tabController.addListener(_handleTabChange);
   }
 
   void _fetchMoviesForCurrentTab() {
     final movieProvider = Provider.of<GetMovieProvider>(context, listen: false);
 
-    // Fetch movies based on the current tab
     if (_tabController.index == 0) {
       movieProvider.fetchMovies('Now Showing');
     } else {
@@ -61,66 +57,54 @@ class _MoviesPageState extends State<MoviesPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: AppBar(
-        backgroundColor: Colors.black87,
-        elevation: 0,
-        iconTheme: const IconThemeData(color: Color(0xFFFCC434)),
-        title: const Text(
-          'Movies',
-          style: TextStyle(
-            color: Color(0xFFFCC434),
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
-          ),
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout, color: Color(0xFFFCC434)),
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => const LoginPage()),
-              );
-            },
-          ),
-        ],
-        bottom: TabBar(
-          controller: _tabController,
-          indicator: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: Colors.white24,
-          ),
-          labelColor: const Color(0xFFFCC434),
-          unselectedLabelColor: Colors.white60,
-          tabs: const [
-            Tab(
-              child: Text(
-                'Now Showing',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
+      backgroundColor: Colors.black, // Deep dark background
+      body: SafeArea(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: TabBar(
+                controller: _tabController,
+                indicator: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: const Color(0xFFFCC434),
                 ),
+                indicatorColor: Colors.transparent,
+                labelColor: Colors.black,
+                unselectedLabelColor: Colors.white70,
+                tabs: const [
+                  Tab(
+                    child: Text(
+                      'Now Showing',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                  Tab(
+                    child: Text(
+                      'Upcoming',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-            Tab(
-              child: Text(
-                'Upcoming',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                ),
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  _buildMovieTab(isNowShowing: true),
+                  _buildMovieTab(isNowShowing: false),
+                ],
               ),
             ),
           ],
         ),
-      ),
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-          _buildMovieTab(isNowShowing: true),
-          _buildMovieTab(isNowShowing: false),
-        ],
       ),
     );
   }
@@ -154,12 +138,12 @@ class _MoviesPageState extends State<MoviesPage>
                 return false;
               },
               child: GridView.builder(
-                padding: const EdgeInsets.all(10),
+                padding: const EdgeInsets.all(16),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: crossAxisCount,
-                  childAspectRatio: 0.6,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
+                  childAspectRatio: 0.65,
+                  crossAxisSpacing: 16,
+                  mainAxisSpacing: 16,
                 ),
                 itemCount: movies.length,
                 itemBuilder: (context, index) {
@@ -174,17 +158,14 @@ class _MoviesPageState extends State<MoviesPage>
   }
 
   Widget _buildMovieCard(dynamic movie) {
-    // Decode base64 image if present
     ImageProvider? imageProvider;
     if (movie['photo'] != null && movie['photo'] is String) {
       try {
-        // Remove data URI prefix if present
         String base64Image = movie['photo'];
         if (base64Image.contains(',')) {
           base64Image = base64Image.split(',')[1];
         }
 
-        // Decode base64 to Uint8List
         final bytes = base64Decode(base64Image);
         imageProvider = MemoryImage(bytes);
       } catch (e) {
@@ -203,119 +184,204 @@ class _MoviesPageState extends State<MoviesPage>
         );
       },
       child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
-          color: Colors.grey[900],
+          color: Colors.grey[900], // Dark background
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.4),
+              spreadRadius: 1,
+              blurRadius: 8,
+              offset: const Offset(0, 4),
+            ),
+          ],
+          border: Border.all(
+            color: Colors.white.withOpacity(0.1),
+            width: 1,
+          ),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ClipRRect(
-              borderRadius:
-              const BorderRadius.vertical(top: Radius.circular(15)),
-              child: imageProvider != null
-                  ? Image(
-                image: imageProvider,
-                height: 250,
-                width: double.infinity,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return Container(
-                    height: 250,
-                    color: Colors.grey[800],
-                    child: const Center(
-                      child: Icon(
-                        Icons.broken_image,
-                        color: Colors.white,
-                        size: 50,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Stack(
+                children: [
+                  // Movie Poster
+                  imageProvider != null
+                      ? Image(
+                    image: imageProvider,
+                    height: 280,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Container(
+                        height: 280,
+                        color: Colors.grey[800],
+                        child: const Center(
+                          child: Icon(
+                            Icons.broken_image,
+                            color: Colors.white,
+                            size: 50,
+                          ),
+                        ),
+                      );
+                    },
+                  )
+                      : CachedNetworkImage(
+                    imageUrl: movie['photo'] ?? '',
+                    height: 280,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) => const Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.white70,
                       ),
                     ),
-                  );
-                },
-              )
-                  : CachedNetworkImage(
-                imageUrl: movie['photo'] ?? '',
-                height: 250,
-                width: double.infinity,
-                fit: BoxFit.cover,
-                placeholder: (context, url) => const Center(
-                  child: CircularProgressIndicator(
-                    color: Colors.white70,
+                    errorWidget: (context, url, error) =>
+                    const Icon(Icons.error),
                   ),
-                ),
-                errorWidget: (context, url, error) =>
-                const Icon(Icons.error),
+
+                  // Gradient Overlay
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                      height: 100,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [
+                            Colors.transparent,
+                            Colors.black.withOpacity(0.8),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  // Quality Badge
+                  Positioned(
+                    top: 16,
+                    right: 16,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 6,
+                      ),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFCC434).withOpacity(0.9),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: const Text(
+                        'HD',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
+
+              // Movie Details
+              Padding(
+                padding: const EdgeInsets.all(16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
                       movie['title'] ?? 'Unknown Title',
                       style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                        color: Color(0xFFFCC434),
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(height: 5),
-                    // Genre with overflow handling
-                    LayoutBuilder(
-                      builder: (context, constraints) {
-                        final genreText = movie['genre'] != null
-                            ? movie['genre'].join(', ')
-                            : 'Unknown Genre';
-                        return Text(
-                          genreText,
-                          style: const TextStyle(
-                            color: Colors.white70,
-                            fontSize: 14,
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.movie_filter,
+                          color: Colors.white70,
+                          size: 18,
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            movie['genre'] != null
+                                ? movie['genre'].join(', ')
+                                : 'Unknown Genre',
+                            style: const TextStyle(
+                              color: Colors.white70,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        );
-                      },
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 5),
-                    // Cast with overflow handling
-                    LayoutBuilder(
-                      builder: (context, constraints) {
-                        final castText = movie['cast'] != null
-                            ? movie['cast'].join(', ')
-                            : 'Unknown Cast';
-                        return Text(
-                          castText,
-                          style: const TextStyle(
-                            color: Colors.white70,
-                            fontSize: 14,
+                    const SizedBox(height: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.star,
+                              color: Color(0xFFFCC434),
+                              size: 20,
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              '4.5/5',
+                              style: TextStyle(
+                                color: Colors.white.withOpacity(0.9),
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 5,
                           ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        );
-                      },
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: const Text(
+                            'Book Now',
+                            style: TextStyle(
+                              color: Color(0xFFFCC434),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
-  void navigateToPage(BuildContext context, Widget page) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => page),
-    );
-  }
 }
+
 class MovieShimmerGrid extends StatelessWidget {
   const MovieShimmerGrid({Key? key}) : super(key: key);
 

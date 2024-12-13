@@ -85,7 +85,7 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
                 ),
               ),
               const SizedBox(height: 5),
-              Text(
+              const Text(
                 'Explore Movies',
                 style: TextStyle(
                   color: Colors.white,
@@ -165,7 +165,7 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
         children: [
           Text(
             title,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.white,
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -177,18 +177,18 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
               // Implement view all functionality
             },
             child: Row(
-              children: [
+              children: const [
                 Text(
                   'View All',
                   style: TextStyle(
-                    color: const Color(0xFFFCC434),
+                    color: Color(0xFFFCC434),
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                const SizedBox(width: 5),
+                SizedBox(width: 5),
                 Icon(
                   Icons.arrow_forward_ios_rounded,
-                  color: const Color(0xFFFCC434),
+                  color: Color(0xFFFCC434),
                   size: 16,
                 ),
               ],
@@ -426,7 +426,7 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
                         color: Colors.black54,
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      child: Text(
+                      child: const Text(
                         'Coming Soon',
                         style: TextStyle(
                           color: Colors.white,
@@ -474,9 +474,7 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
               children: [
                 Icon(Icons.calendar_month_outlined, color: Colors.grey[400], size: 16),
                 Text(
-                  movie['releaseDate'] != null
-                      ? movie['releaseDate']
-                      : 'No realease date',
+                  movie['releaseDate'] ?? 'No realease date',
                   style: TextStyle(
                     color: Colors.grey[400],
                     fontSize: 12,
@@ -498,7 +496,7 @@ class _DashboardState extends State<Dashboard> with AutomaticKeepAliveClientMixi
     return CarouselSlider.builder(
         itemCount: 5,
         options: CarouselOptions(
-        height: 500,
+        height: 450,
         viewportFraction: 0.7,
         enlargeCenterPage: true,
     ),

@@ -16,7 +16,7 @@ class _HomePageState extends State<HomePage> {
   // Pages for each navigation item
   final List<Widget> _pages = [
     const Dashboard(),
-    MoviesPage(),
+    const MoviesPage(),
     const MyTickets(),
     ProfilePage(),
   ];

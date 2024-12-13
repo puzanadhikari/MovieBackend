@@ -190,13 +190,13 @@ class _UserMovieDetailState extends State<UserMovieDetail>
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              children: [
+              children: const [
                 Icon(
                   Icons.upcoming,
-                  color: const Color(0xFFFCC434),
+                  color: Color(0xFFFCC434),
                   size: 60,
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 Text(
                   'Coming Soon',
                   style: TextStyle(
@@ -205,7 +205,7 @@ class _UserMovieDetailState extends State<UserMovieDetail>
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8),
                 Text(
                   'Stay tuned for show times',
                   style: TextStyle(
@@ -358,7 +358,7 @@ class _UserMovieDetailState extends State<UserMovieDetail>
                 onTap: () {
                   setState(() => selectedShowTime = showTime['time']);
                log("Selected show time: ${showTime['time']}, "
-                   "hall: ${selectedHall['name']}, date: ${selectedDate}"
+                   "hall: ${selectedHall['name']}, date: $selectedDate"
                    ", audi: ${showTime['audiName']}, capacity: ${showTime['capacity']}");
                   Navigator.push(
                     context,

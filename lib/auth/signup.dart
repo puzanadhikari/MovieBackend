@@ -128,7 +128,7 @@ class _SignUpPageState extends State<SignUpPage> {
       msg: message,
       toastLength: Toast.LENGTH_LONG,
       gravity: ToastGravity.BOTTOM,
-      backgroundColor: isError ? Colors.red : Color(0xFFFCC434),
+      backgroundColor: isError ? Colors.red : const Color(0xFFFCC434),
       textColor: Colors.white,
       fontSize: 16.0,
     );

@@ -3,7 +3,6 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:movie_booking_flutter_backend/admin/hall_list.dart';
-import 'package:movie_booking_flutter_backend/admin/hall_page.dart';
 import 'package:movie_booking_flutter_backend/admin/movie_detail_page.dart';
 import 'package:movie_booking_flutter_backend/provider/get_movie_provider.dart';
 import 'package:provider/provider.dart';
