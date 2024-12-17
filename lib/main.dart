@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:movie_booking_flutter_backend/provider/add_hall_provider.dart';
 import 'package:movie_booking_flutter_backend/provider/get_hall_provider.dart';
 import 'package:movie_booking_flutter_backend/provider/get_movie_provider.dart';
+import 'package:movie_booking_flutter_backend/provider/hall_listing_provider.dart';
 import 'package:movie_booking_flutter_backend/provider/hall_provider.dart';
 import 'package:movie_booking_flutter_backend/provider/login_provider.dart';
 import 'package:movie_booking_flutter_backend/provider/movie_provider.dart';
@@ -22,6 +23,7 @@ void main() {
         ChangeNotifierProvider(create: (context) => HallProvider()),
         ChangeNotifierProvider(create: (context) => GetHallProvider()),
         ChangeNotifierProvider(create: (context) => AddHallProvider()),
+        ChangeNotifierProvider(create: (context) => HallListingProvider()),
       ],
       child: const MyApp(),
     ),

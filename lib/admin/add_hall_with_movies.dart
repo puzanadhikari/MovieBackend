@@ -3,14 +3,14 @@ import 'package:movie_booking_flutter_backend/provider/get_movie_provider.dart';
 import 'package:movie_booking_flutter_backend/provider/hall_provider.dart';
 import 'package:provider/provider.dart';
 
-class HallPage extends StatefulWidget {
-  const HallPage({Key? key}) : super(key: key);
+class AddHallWithMovies extends StatefulWidget {
+  const AddHallWithMovies({Key? key}) : super(key: key);
 
   @override
-  _HallPageState createState() => _HallPageState();
+  _AddHallWithMoviesState createState() => _AddHallWithMoviesState();
 }
 
-class _HallPageState extends State<HallPage> {
+class _AddHallWithMoviesState extends State<AddHallWithMovies> {
   final _formKey = GlobalKey<FormState>();
 
   // Controllers

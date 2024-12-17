@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:movie_booking_flutter_backend/admin/hall_page.dart';
+import 'package:movie_booking_flutter_backend/admin/add_hall_with_movies.dart';
 import 'package:movie_booking_flutter_backend/provider/get_hall_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
-class HAllList extends StatefulWidget {
-  const HAllList({super.key});
+class HallWithMovies extends StatefulWidget {
+  const HallWithMovies({super.key});
 
   @override
-  State<HAllList> createState() => _HAllListState();
+  State<HallWithMovies> createState() => _HallWithMoviesState();
 }
 
-class _HAllListState extends State<HAllList> {
+class _HallWithMoviesState extends State<HallWithMovies> {
   @override
   void initState() {
     super.initState();
@@ -217,7 +217,7 @@ class _HAllListState extends State<HAllList> {
       child: FloatingActionButton.extended(
         onPressed: () {
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const HallPage()));
+              MaterialPageRoute(builder: (context) => const AddHallWithMovies()));
         },
         icon: const Icon(Icons.add, color: Colors.black, size: 30),
         label: const Text(
