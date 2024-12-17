@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:movie_booking_flutter_backend/admin/add_hall.dart';
 import 'package:movie_booking_flutter_backend/admin/hall_list.dart';
 import 'package:movie_booking_flutter_backend/admin/movie_detail_page.dart';
 import 'package:movie_booking_flutter_backend/provider/get_movie_provider.dart';
@@ -350,8 +351,13 @@ class _AdminHomePageState extends State<AdminHomePage>
             onTap: () => navigateToPage(context, const CreateMovies()),
           ),
           _buildDrawerItem(
+            icon: Icons.other_houses,
+            title: 'Add Hall',
+            onTap: () => navigateToPage(context, const AddHall()),
+          ),
+          _buildDrawerItem(
             icon: Icons.local_movies_rounded,
-            title: 'Hall',
+            title: 'Movies in Hall',
             onTap: () => navigateToPage(context, const HAllList()),
           ),
           _buildDrawerItem(
