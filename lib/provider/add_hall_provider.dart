@@ -10,16 +10,19 @@ class AddHallProvider with ChangeNotifier {
   int? _statusCode;
 
   bool get isLoading => _isLoading;
+
   int? get statusCode => _statusCode;
 
-  Future<void> submitHall(Map<String, dynamic> hallData, BuildContext context) async {
+  Future<void> submitHall(
+      Map<String, dynamic> hallData, BuildContext context) async {
     _isLoading = true;
     _statusCode = null;
     notifyListeners();
 
     try {
       final response = await http.post(
-        Uri.parse('${ApiConstant.protocol}${ApiConstant.baseUrl}${ApiConstant.addHall}'),
+        Uri.parse(
+            '${ApiConstant.protocol}${ApiConstant.baseUrl}${ApiConstant.addHall}'),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -29,39 +32,72 @@ class AddHallProvider with ChangeNotifier {
       _statusCode = response.statusCode;
       _isLoading = false;
       notifyListeners();
-
-      // Check response status and show appropriate toast
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        // Success case
-        Fluttertoast.showToast(
-          msg: "Hall added successfully!",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: Colors.green,
-          textColor: Colors.white,
-        );
-
-        // Navigate back
-        Navigator.pop(context);
-      } else {
-        // Error case
-        Fluttertoast.showToast(
-          msg: "Failed to add hall. Status code: ${response.statusCode}",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-        );
+      String message;
+      Color backgroundColor;
+      // Comprehensive error handling for different status codes
+      switch (response.statusCode) {
+        case 200:
+        case 201:
+          message = "Hall added successfully!";
+          backgroundColor = Colors.green;
+          Navigator.pop(context);
+          break;
+        case 400:
+          final errorBody = json.decode(response.body);
+          message = errorBody['message'] ?? "Bad Request: Invalid data";
+          backgroundColor = Colors.orange;
+          break;
+        case 401:
+          message = "Unauthorized: Authentication required";
+          backgroundColor = Colors.red;
+          break;
+        case 403:
+          message = "Forbidden: Insufficient permissions";
+          backgroundColor = Colors.red;
+          break;
+        case 404:
+          message = "Not Found: Resource unavailable";
+          backgroundColor = Colors.red;
+          break;
+        case 500:
+          message = "Server Error: Internal server problem";
+          backgroundColor = Colors.red;
+          break;
+        case 502:
+          message = "Bad Gateway: Server temporarily unavailable";
+          backgroundColor = Colors.red;
+          break;
+        case 503:
+          message = "Service Unavailable: Server overloaded";
+          backgroundColor = Colors.red;
+          break;
+        default:
+          message = "Error: Unexpected status code ${response.statusCode}";
+          backgroundColor = Colors.red;
       }
+
+      Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: backgroundColor,
+        textColor: Colors.white,
+      );
     } catch (e) {
       _statusCode = null;
       _isLoading = false;
-      notifyListeners();
-
-      // Error toast for network or other exceptions
       Fluttertoast.showToast(
         msg: "Error: ${e.toString()}",
-        toastLength: Toast.LENGTH_SHORT,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
+
+      // Network or other exceptions
+      Fluttertoast.showToast(
+        msg: "Network Error: ${e.toString()}",
+        toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.BOTTOM,
         backgroundColor: Colors.red,
         textColor: Colors.white,
