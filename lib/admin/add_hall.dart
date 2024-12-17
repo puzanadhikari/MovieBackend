@@ -32,6 +32,13 @@ class _AddHallState extends State<AddHall> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new, color:Color(0xFFFCC434)),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        centerTitle: true,
         title: Text(
           'Add Hall',
           style: TextStyle(
